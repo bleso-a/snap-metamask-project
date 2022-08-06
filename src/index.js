@@ -5,7 +5,7 @@ module.exports.onRpcRequest = async ({ origin, request }) => {
   });
   console.log('state', state);
   if (!state) {
-    state = {book:[]}; 
+    state = { book: [] };
     await wallet.request({
       method: 'snap_manageState',
       params: ['update', state],
@@ -15,42 +15,48 @@ module.exports.onRpcRequest = async ({ origin, request }) => {
   switch (request.method) {
     case 'addBookForm':
       state.book.push({
-        id:request.id,
-        title:request.title,
-        author:request.author,
-        isbn:request.isbn,
+        id: request.id,
+        title: request.title,
+        author: request.author,
+        isbn: request.isbn,
         publish_date: request.publish_date,
-        number_of_pages: request.number_of_pages
+        number_of_pages: request.number_of_pages,
       });
+
       await wallet.request({
-        method: 'snap_manageState', 
-        params: ['update', state], 
+        method: 'snap_manageState',
+        params: ['update', state],
       });
       return true;
-      
+
     case 'getBookForm':
       return state.book;
 
     case 'deleteItem':
       state.book = state.book.filter((item) => item.id !== request.id);
       await wallet.request({
-        method: 'snap_manageState', 
-        params: ['update', state], 
+        method: 'snap_manageState',
+        params: ['update', state],
       });
       return true;
 
     case 'clearSnaps':
-        state.book = state.book.filter((item) => item.id !== request.id);
-        await wallet.request({
-          method: 'snap_manageState', 
-          params: ['update', {}], 
-        });
-        return true;
+      state.book = state.book.filter((item) => item.id !== request.id);
+      await wallet.request({
+        method: 'snap_manageState',
+        params: ['update', {}],
+      });
+      return true;
 
     case 'sendForm':
-      let books = state && state.book ? state.book.map((item) => {
-        return `${item.title}, ${item.author}, ${item.isbn}`
-      }).join("\n") : '';
+      const books =
+        state && state.book
+          ? state.book
+              .map((item) => {
+                return `${item.title}, ${item.author}, ${item.isbn}`;
+              })
+              .join('\n')
+          : '';
       return wallet.request({
         method: 'snap_confirm',
         params: [
