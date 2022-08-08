@@ -10,7 +10,7 @@
   <body>
     <div class="container mt-4">
       <h1 class="display-4 text-center">
-        <i class="fas fa-book-open text-primary"></i> Digital<span class="text-primary"> Library</span> Snap
+        <i class="fas fa-book-open text-primary"></i> Digital<span class="text-primary"> Library</span>Snap
       </h1>
     <button class="btn btn-outline-primary m-4 connect">Connect</button>
     <form id="bookForm">
@@ -58,18 +58,14 @@
     const snapId = `local:${window.location.href}`;
 
     const connectButton = document.querySelector('button.connect')
-    // const sendButton = document.querySelector('button.save')
 
     const clearButton = document.querySelector('button.clear')
     clearButton.addEventListener('click', clearSnaps)
 
     connectButton.addEventListener('click', connect)
-    // sendButton.addEventListener('click', addBook)
 
 
 
-
-    // here we get permissions to interact with and install the snap
     async function connect () {
       await ethereum.request({
         method: 'wallet_enable',
@@ -81,21 +77,19 @@
       getBook();
     }
 
-    async function clearSnaps () {
-      try { 
+    async function send () {
+      try {
         const response = await ethereum.request({
-          method: 'wallet_invokeSnap', 
+          method: 'wallet_invokeSnap',
           params: [snapId, {
-            method: 'clearSnaps'
+            method: 'sendForm'
           }]
         })
-        send();
-      } catch (err) { 
+      } catch (err) {
         console.error(err)
         alert('Problem happened: ' + err.message || err)
       }
-      alert('Snap is clear');
-      getBook();
+      
     }
 
     const addBookForm = document.getElementById('bookForm')
@@ -138,11 +132,7 @@
         send();
       } catch (err) { 
         console.error(err)
-        // alert('Problem happened: ' + err.message || err)
       }
-
-    
-
       getBook();
     }
     
@@ -174,14 +164,14 @@
           <td>${item.publish_date}</td>
           <td>${item.number_of_pages}</td>
           <td><a href="https://openlibrary.org/isbn/${item.isbn}" target="_blank">${item.isbn}</a></td>
-          <td><a href="#" id="${item.id}" class="btn btn-danger btn-sm delete" onclick="deleteSnap(${item.id})">X</a></td>
+          <td><a href="#" id="${item.id}" class="btn btn-danger btn-sm delete" onclick="deleteBook(${item.id})">X</a></td>
         `;
         list.appendChild(row);
       });
     }
 
 
-    async function deleteSnap(id) {
+    async function deleteBook(id) {
       console.log('ID for delete ', id);
       try {
         const response = await ethereum.request({
@@ -199,19 +189,21 @@
       }
     }
 
-    async function send () {
-      try {
+    async function clearSnaps () {
+      try { 
         const response = await ethereum.request({
-          method: 'wallet_invokeSnap',
+          method: 'wallet_invokeSnap', 
           params: [snapId, {
-            method: 'sendForm'
+            method: 'clearSnaps'
           }]
         })
-      } catch (err) {
+        send();
+      } catch (err) { 
         console.error(err)
         alert('Problem happened: ' + err.message || err)
       }
-      
+      alert('Snap is clear');
+      getBook();
     }
   </script>
 </html>
