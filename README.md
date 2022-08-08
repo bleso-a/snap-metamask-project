@@ -12,6 +12,6 @@ This application uses MetaMask Snap to store book information, and it presents a
 
 # WIP: Tutorial
 
-Want to learn how to build this snap, read the tutorial in the GitHub Wiki of this repository.
+Want to learn how to build this snap, read the tutorial in the [GitHub Wiki of this repository](https://github.com/bleso-a/snap-metamask-project/wiki/%F0%9F%9A%A7-WIP:-Build-a-Decentralized-Digital-Library-with-MetaMask-Snap)
 
 Currently, it's work in progress, and will be completed few hours from this commit.
